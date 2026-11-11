@@ -31,13 +31,14 @@ require 'cabecera.php';
 <?php else: ?>
   <table>
     <thead>
-      <tr><th>Libro</th><th>Prestado el</th><th>Devuelto el</th></tr>
+      <tr><th>Libro</th><th>Prestado el</th><th>Vencimiento previsto</th><th>Devuelto el</th></tr>
     </thead>
     <tbody>
       <?php foreach ($prestamos as $p): ?>
         <tr>
           <td><?= htmlspecialchars($p['titulo']) ?></td>
           <td><?= date('d/m/Y', strtotime($p['fecha_prestamo'])) ?></td>
+          <td><?= date('d/m/Y', strtotime($p['fecha_vencimiento'])) ?></td>
           <td>
             <?php if ($p['fecha_devolucion'] === null): ?>
               <strong>En préstamo</strong>

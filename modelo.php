@@ -4,7 +4,12 @@ function prestamosEnCurso(PDO $pdo): array
 {
     $consulta = $pdo->query(
         'SELECT p.id, l.titulo, le.id AS lector_id, le.nombre, le.apellidos,
-                p.fecha_prestamo, DATEDIFF(CURDATE(), p.fecha_prestamo) AS dias
+                p.fecha_prestamo,
+                DATE_ADD(p.fecha_prestamo, INTERVAL 30 DAY) AS fecha_vencimiento,
+                GREATEST(
+                    DATEDIFF(CURDATE(), DATE_ADD(p.fecha_prestamo, INTERVAL 30 DAY)),
+                    0
+                ) AS dias_retraso
          FROM prestamos p
          JOIN libros l ON l.id = p.libro_id
          JOIN lectores le ON le.id = p.lector_id
@@ -72,7 +77,9 @@ function lectorPorId(PDO $pdo, int $id): array|false
 function prestamosDeLector(PDO $pdo, int $lectorId): array
 {
     $consulta = $pdo->prepare(
-        'SELECT l.titulo, p.fecha_prestamo, p.fecha_devolucion
+        'SELECT l.titulo, p.fecha_prestamo,
+                DATE_ADD(p.fecha_prestamo, INTERVAL 30 DAY) AS fecha_vencimiento,
+                p.fecha_devolucion
          FROM prestamos p
          JOIN libros l ON l.id = p.libro_id
          WHERE p.lector_id = ?
@@ -94,22 +101,60 @@ function devolverPrestamo(PDO $pdo, int $id): bool
     return $consulta->rowCount() === 1;
 }
 
-function buscarLibros(PDO $pdo, string $busqueda): array
+function buscarLibros(PDO $pdo, string $busqueda, string $genero = '', string $estado = ''): array
 {
-    $consulta = $pdo->prepare(
+    $filtros = [];
+    $parametros = [];
+
+    if ($busqueda !== '') {
+        $filtros[] = '(l.titulo LIKE ? OR l.autor LIKE ?)';
+        $termino = '%' . $busqueda . '%';
+        $parametros[] = $termino;
+        $parametros[] = $termino;
+    }
+
+    if ($genero !== '') {
+        $filtros[] = 'l.genero = ?';
+        $parametros[] = $genero;
+    }
+
+    if ($estado === 'Disponible') {
+        $filtros[] = 'NOT EXISTS (
+            SELECT 1 FROM prestamos p
+            WHERE p.libro_id = l.id AND p.fecha_devolucion IS NULL
+        )';
+    } elseif ($estado === 'Prestado') {
+        $filtros[] = 'EXISTS (
+            SELECT 1 FROM prestamos p
+            WHERE p.libro_id = l.id AND p.fecha_devolucion IS NULL
+        )';
+    }
+
+    $sql =
         'SELECT l.id, l.isbn, l.titulo, l.autor, l.anio, l.genero,
             CASE WHEN EXISTS (
                     SELECT 1 FROM prestamos p
                     WHERE p.libro_id = l.id AND p.fecha_devolucion IS NULL
             ) THEN \'Prestado\' ELSE \'Disponible\' END AS estado
          FROM libros l
-         WHERE l.titulo LIKE ? OR l.autor LIKE ?
-         ORDER BY l.titulo'
-    );
-    $termino = '%' . $busqueda . '%';
-    $consulta->execute([$termino, $termino]);
+         ' .
+        ($filtros ? 'WHERE ' . implode(' AND ', $filtros) : '') .
+        ' ORDER BY l.titulo';
+    $consulta = $pdo->prepare($sql);
+    $consulta->execute($parametros);
 
     return $consulta->fetchAll();
+}
+
+function generosLibros(PDO $pdo): array
+{
+    $consulta = $pdo->query(
+        'SELECT DISTINCT genero FROM libros
+         WHERE genero <> \'\'
+         ORDER BY genero'
+    );
+
+    return $consulta->fetchAll(PDO::FETCH_COLUMN);
 }
 
 function listaLectores(PDO $pdo): array

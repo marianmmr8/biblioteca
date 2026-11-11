@@ -170,7 +170,7 @@ main { min-width: 0; }
 
 .catalogo-presentacion {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(14rem, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.65fr);
   align-items: center;
   gap: 1.5rem;
   margin: 1.25rem 0 2rem;
@@ -185,7 +185,21 @@ main { min-width: 0; }
 .catalogo-citas blockquote { margin: 0.8rem 0 0; padding: 0.8rem 1rem; border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; background: #f5f8f7; }
 .catalogo-citas blockquote p { margin: 0 0 0.4rem; color: var(--ink); font-family: Georgia, "Palatino Linotype", serif; font-size: 1rem; }
 .catalogo-citas cite { color: var(--muted); font-size: 0.85rem; font-style: normal; }
-.ilustracion-literaria { display: block; width: 100%; max-width: 25rem; margin: 0 auto; border-radius: 12px; }
+.ilustracion-literaria {
+  display: block;
+  width: 100%;
+  max-width: 17rem;
+  max-height: 30rem;
+  margin: 0 auto;
+  object-fit: contain;
+  transform-origin: center bottom;
+  animation: vaiven-lectura 5s ease-in-out infinite;
+}
+
+@keyframes vaiven-lectura {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
 
 h1, h2, h3 {
   color: var(--forest);
@@ -316,6 +330,10 @@ form[action="eliminar.php"] button:hover { border-color: #853b2e; background: #8
 .busqueda { display: flex; flex-wrap: wrap; align-items: end; gap: 0.65rem; margin: 1rem 0 1.4rem; }
 .busqueda label { margin: 0; }
 .busqueda input { min-width: min(22rem, 100%); }
+.busqueda-catalogo { display: grid; grid-template-columns: minmax(12rem, 2fr) minmax(9rem, 1fr) minmax(9rem, 1fr) auto auto; align-items: end; }
+.busqueda-catalogo label { display: grid; gap: 0.3rem; }
+.busqueda-catalogo input, .busqueda-catalogo select { width: 100%; min-width: 0; max-width: none; }
+.limpiar-filtros { padding: 0.55rem 0; font-weight: 700; }
 
 @media (max-width: 760px) {
   body { padding: 0 1rem 3rem; }
@@ -323,11 +341,13 @@ form[action="eliminar.php"] button:hover { border-color: #853b2e; background: #8
   nav { gap: 0.2rem; }
   nav a { padding: 0.45rem 0.55rem; }
   h1 { font-size: 1.9rem; }
-  .portada-hero, .catalogo-presentacion { grid-template-columns: 1fr; }
+  .portada-hero { grid-template-columns: 1fr; }
+  .catalogo-presentacion { grid-template-columns: 1fr; }
+  .busqueda-catalogo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .busqueda-catalogo label:first-child { grid-column: 1 / -1; }
   .portada-hero { gap: 1.5rem; padding: 1.5rem; }
   .portada-tarjetas { grid-template-columns: 1fr; }
   .tarjeta-portada p { min-height: 0; }
-  .ilustracion-literaria { max-width: 22rem; }
   table { display: block; max-width: 100%; overflow-x: auto; }
   th, td { padding: 0.7rem; white-space: nowrap; }
 }
@@ -337,10 +357,17 @@ form[action="eliminar.php"] button:hover { border-color: #853b2e; background: #8
   .logo-biblioteca { width: 2.8rem; height: 2.8rem; }
   .marca { font-size: 1.2rem; }
   .catalogo-presentacion { padding: 1rem; }
+  .ilustracion-literaria { max-height: 25rem; }
   .busqueda-portada-card { padding: 1.1rem; }
   nav { gap: 0.1rem; }
   nav a { font-size: 0.88rem; }
   form.alta, .formulario { padding: 1rem; }
   .busqueda { align-items: stretch; flex-direction: column; }
   .busqueda input { min-width: 0; width: 100%; }
+  .busqueda-catalogo { display: grid; grid-template-columns: 1fr; }
+  .busqueda-catalogo label:first-child { grid-column: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ilustracion-literaria { animation: none; }
 }

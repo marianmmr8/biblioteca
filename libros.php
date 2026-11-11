@@ -11,7 +11,15 @@ $mensajes = [
 ];
 $mensaje = $mensajes[$_GET['msg'] ?? ''] ?? '';
 $busqueda = trim((string) ($_GET['q'] ?? ''));
-$libros = buscarLibros($pdo, $busqueda);
+$generoSolicitado = $_GET['genero'] ?? '';
+$filtroGenero = is_string($generoSolicitado) ? trim($generoSolicitado) : '';
+$estadoSolicitado = $_GET['estado'] ?? '';
+$estadoSolicitado = is_string($estadoSolicitado) ? $estadoSolicitado : '';
+$filtroEstado = in_array($estadoSolicitado, ['Disponible', 'Prestado'], true)
+    ? $estadoSolicitado
+    : '';
+$generos = generosLibros($pdo);
+$libros = buscarLibros($pdo, $busqueda, $filtroGenero, $filtroEstado);
 
 $titulo = 'Libros';
 require 'cabecera.php';
@@ -25,24 +33,45 @@ require 'cabecera.php';
 
 <section class="catalogo-presentacion" aria-labelledby="inspiracion-lectora">
   <div class="catalogo-citas">
-    <p class="sobretitulo">Ideas para llevar contigo</p>
-    <h2 id="inspiracion-lectora">Cada libro abre un camino.</h2>
+    <p class="sobretitulo">Miguel de Cervantes</p>
+    <h2 id="inspiracion-lectora">Don Quijote, en sus palabras.</h2>
     <blockquote>
-      <p>«Algunos libros deben saborearse, otros devorarse y unos pocos, masticarse y digerirse.»</p>
-      <cite>Francis Bacon, <i>Ensayos</i></cite>
+      <p>«El que lee mucho y anda mucho, ve mucho y sabe mucho.»</p>
+      <cite><i>Don Quijote de la Mancha</i>, segunda parte, capítulo 25</cite>
     </blockquote>
     <blockquote>
-      <p>«No es que tengamos poco tiempo, sino que perdemos mucho.»</p>
-      <cite>Séneca, <i>Sobre la brevedad de la vida</i></cite>
+      <p>«Cada uno es artífice de su ventura.»</p>
+      <cite><i>Don Quijote de la Mancha</i>, segunda parte, capítulo 66</cite>
     </blockquote>
   </div>
-  <img class="ilustracion-literaria" src="assets/don-quijote.svg" alt="Ilustración original de Don Quijote junto a un molino">
+  <img class="ilustracion-literaria" src="assets/don-quijote.png" alt="Ilustración de Don Quijote, obra del usuario">
 </section>
 
-<form method="get" class="busqueda">
-  <label for="q">Buscar por título o autor</label>
-  <input type="search" id="q" name="q" value="<?= htmlspecialchars($busqueda) ?>">
-  <button>Buscar</button>
+<form method="get" class="busqueda busqueda-catalogo">
+  <label for="q">Buscar por título o autor
+    <input type="search" id="q" name="q" value="<?= htmlspecialchars($busqueda) ?>">
+  </label>
+  <label for="genero">Género
+    <select id="genero" name="genero">
+      <option value="">Todos</option>
+      <?php foreach ($generos as $generoOpcion): ?>
+        <option value="<?= htmlspecialchars($generoOpcion) ?>" <?= $filtroGenero === $generoOpcion ? 'selected' : '' ?>>
+          <?= htmlspecialchars($generoOpcion) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+  </label>
+  <label for="estado">Disponibilidad
+    <select id="estado" name="estado">
+      <option value="">Todos</option>
+      <option value="Disponible" <?= $filtroEstado === 'Disponible' ? 'selected' : '' ?>>Disponible</option>
+      <option value="Prestado" <?= $filtroEstado === 'Prestado' ? 'selected' : '' ?>>Prestado</option>
+    </select>
+  </label>
+  <button type="submit">Filtrar</button>
+  <?php if ($busqueda !== '' || $filtroGenero !== '' || $filtroEstado !== ''): ?>
+    <a class="limpiar-filtros" href="libros.php">Limpiar</a>
+  <?php endif; ?>
 </form>
 
 <?php if (!$libros): ?>

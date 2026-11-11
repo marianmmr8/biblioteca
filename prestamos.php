@@ -23,11 +23,11 @@ require 'cabecera.php';
 <?php else: ?>
   <table>
     <thead>
-      <tr><th>Libro</th><th>Lector</th><th>Prestado el</th><th>Días</th><th>Acción</th></tr>
+      <tr><th>Libro</th><th>Lector</th><th>Prestado el</th><th>Vence el</th><th>Estado</th><th>Acción</th></tr>
     </thead>
     <tbody>
       <?php foreach ($prestamos as $p): ?>
-        <tr class="<?= $p['dias'] > 30 ? 'retrasado' : '' ?>">
+          <tr class="<?= $p['dias_retraso'] > 0 ? 'retrasado' : '' ?>">
           <td><?= htmlspecialchars($p['titulo']) ?></td>
           <td>
             <a href="lector.php?id=<?= (int) $p['lector_id'] ?>">
@@ -35,7 +35,14 @@ require 'cabecera.php';
             </a>
           </td>
           <td><?= date('d/m/Y', strtotime($p['fecha_prestamo'])) ?></td>
-          <td><?= (int) $p['dias'] ?></td>
+          <td><?= date('d/m/Y', strtotime($p['fecha_vencimiento'])) ?></td>
+          <td>
+            <?php if ($p['dias_retraso'] > 0): ?>
+              <?= (int) $p['dias_retraso'] ?> días de retraso
+            <?php else: ?>
+              En plazo
+            <?php endif; ?>
+          </td>
           <td>
             <form method="post" action="devolver.php">
               <input type="hidden" name="id" value="<?= $p['id'] ?>">
