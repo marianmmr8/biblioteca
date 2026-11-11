@@ -23,6 +23,22 @@ require 'cabecera.php';
 
 <p><a href="nuevo-libro.php">Añadir libro</a></p>
 
+<section class="catalogo-presentacion" aria-labelledby="inspiracion-lectora">
+  <div class="catalogo-citas">
+    <p class="sobretitulo">Ideas para llevar contigo</p>
+    <h2 id="inspiracion-lectora">Cada libro abre un camino.</h2>
+    <blockquote>
+      <p>«Algunos libros deben saborearse, otros devorarse y unos pocos, masticarse y digerirse.»</p>
+      <cite>Francis Bacon, <i>Ensayos</i></cite>
+    </blockquote>
+    <blockquote>
+      <p>«No es que tengamos poco tiempo, sino que perdemos mucho.»</p>
+      <cite>Séneca, <i>Sobre la brevedad de la vida</i></cite>
+    </blockquote>
+  </div>
+  <img class="ilustracion-literaria" src="assets/don-quijote.svg" alt="Ilustración original de Don Quijote junto a un molino">
+</section>
+
 <form method="get" class="busqueda">
   <label for="q">Buscar por título o autor</label>
   <input type="search" id="q" name="q" value="<?= htmlspecialchars($busqueda) ?>">

@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Ese libro ya está prestado.';
             } else {
                 // Redirige para que F5 no repita el préstamo
-                header('Location: index.php?msg=prestado');
+                header('Location: prestamos.php?msg=prestado');
                 exit;
             }
         } catch (PDOException $e) {

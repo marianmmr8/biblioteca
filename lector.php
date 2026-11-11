@@ -13,7 +13,7 @@ if (!$lector) {
     http_response_code(404);
     $titulo = 'Lector no encontrado';
     require 'cabecera.php';
-    echo '<p>No hay ningún lector con ese número. <a href="index.php">Volver al listado</a></p>';
+    echo '<p>No hay ningún lector con ese número. <a href="lectores.php">Volver al listado</a></p>';
     require 'pie.php';
     exit;
 }

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" role="img" aria-labelledby="titulo descripcion">
+  <title id="titulo">Don Quijote y los molinos</title>
+  <desc id="descripcion">Ilustración original de Don Quijote a caballo frente a un molino, bajo un cielo de tarde.</desc>
+  <defs>
+    <linearGradient id="cielo" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8e9c9"/>
+      <stop offset="1" stop-color="#e7c879"/>
+    </linearGradient>
+    <linearGradient id="armadura" x1="0" x2="1">
+      <stop offset="0" stop-color="#2c6970"/>
+      <stop offset="1" stop-color="#174e63"/>
+    </linearGradient>
+  </defs>
+  <rect width="560" height="420" rx="28" fill="url(#cielo)"/>
+  <circle cx="448" cy="82" r="36" fill="#fff5d9" opacity=".8"/>
+  <path d="M0 302c88-38 141-13 216-34s133-7 196 8 103 11 148-5v149H0z" fill="#b9c68a"/>
+  <path d="M0 350c122-34 201 17 314-8s169-17 246 0v78H0z" fill="#899d68"/>
+
+  <g stroke="#80654b" stroke-linejoin="round">
+    <path d="m67 300 12-102h66l15 102z" fill="#f3e5c7" stroke-width="4"/>
+    <path d="m72 199 39-35 42 35z" fill="#a85d43" stroke-width="4"/>
+    <path d="M111 206v94m-31-54h68" fill="none" stroke-width="3" opacity=".6"/>
+    <path d="M112 166v-46m0 46-38-32m38 32 39-32m-39 32-37 34m37-34 37 34" fill="none" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="112" cy="166" r="8" fill="#d6b66e" stroke-width="3"/>
+  </g>
+
+  <g stroke="#263b3b" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M257 280c25-26 89-30 127-13 26 12 38 37 22 51-18 17-92 21-130 5-27-11-36-28-19-43z" fill="#765844" stroke-width="5"/>
+    <path d="M360 279c4-26 7-51 26-65 13-9 29-3 32 9 2 10-5 20-17 25l-8 39" fill="#d7c3a0" stroke-width="5"/>
+    <path d="M401 218c11-8 23-5 28 3l-5 8-20 1" fill="#d7c3a0" stroke-width="4"/>
+    <path d="m422 214 12-3m-16-3 11-5" fill="none" stroke-width="3"/>
+    <path d="m275 318-10 48m35-38-4 44m78-43 13 40m11-49 25 36" fill="none" stroke-width="8"/>
+    <path d="m260 367 18 2m12 4 19-1m78-2 17 2m8-6 17 2" fill="none" stroke-width="5"/>
+    <path d="M250 280c-23-8-30-21-26-33 10 5 17 11 25 19" fill="none" stroke-width="5"/>
+
+    <path d="M322 229c-8-23-5-42 9-51 12-9 28-4 33 8l-3 22-18 23z" fill="#e1bd8d" stroke-width="4"/>
+    <path d="m326 184 7-20 26 2 10 22-9 8-7-16-16-2-4 15z" fill="#d8d0b4" stroke-width="4"/>
+    <path d="M337 163c-1-18 8-26 18-21-2 8-1 14 4 20" fill="none" stroke="#a85d43" stroke-width="5"/>
+    <path d="M329 203c8 2 15 1 23-3m-20 12 14-1" fill="none" stroke="#8a5b43" stroke-width="3"/>
+    <path d="M318 225c-18 10-24 34-18 58l37 9 21-47-10-25" fill="url(#armadura)" stroke-width="5"/>
+    <path d="m320 238-20 32 16 7m32-38 18 22-10 12" fill="none" stroke-width="6"/>
+    <path d="m316 275-17 20 18 10 27-15 17 10 15-12-24-26" fill="#a85d43" stroke-width="4"/>
+    <path d="m309 294 24-19" fill="none" stroke="#f0d7a4" stroke-width="3"/>
+    <path d="M300 268 254 132" fill="none" stroke="#80654b" stroke-width="5"/>
+    <path d="m250 132 7-17 7 19z" fill="#d6b66e" stroke-width="3"/>
+  </g>
+  <path d="M36 57c20-17 39-13 52 0 16-14 40-8 44 10H32c-3-4-1-8 4-10zm359 74c15-12 30-10 40 1 12-10 29-6 32 7h-72c-2-3-1-6 0-8z" fill="#fff9e9" opacity=".8"/>
+</svg>

@@ -8,14 +8,23 @@
 </head>
 <body>
   <header>
-    <p class="marca">Biblioteca municipal</p>
-    <nav>
-      <a href="index.php">Préstamos en curso</a>
+    <div class="identidad">
+      <svg class="logo-biblioteca" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M7 39h34M10 35h28M13 35V15l7-4v24M22 35V9l7 4v22M32 35V17l6-3v21M9 39v3h30v-3" />
+      </svg>
+      <div>
+        <p class="marca">Biblioteca municipal</p>
+        <p class="marca-subtitulo">Lectura, cultura y comunidad</p>
+      </div>
+    </div>
+    <nav aria-label="Navegación principal">
+      <a href="index.php">Inicio</a>
+      <a href="prestamos.php">Préstamos</a>
       <a href="nuevo.php">Nuevo préstamo</a>
-      <a href="libros.php">Libros</a>
+      <a href="libros.php">Catálogo</a>
       <a href="lectores.php">Lectores</a>
-      <a href="prestamos-xml.php">XML</a>
+      <a href="prestamos-xml.php">Exportar XML</a>
     </nav>
   </header>
   <main>
-    <h1><?= htmlspecialchars($titulo) ?></h1>
+    <h1><?= htmlspecialchars($encabezado ?? $titulo) ?></h1>
