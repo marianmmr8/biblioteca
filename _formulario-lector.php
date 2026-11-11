@@ -3,6 +3,7 @@
 <?php endif; ?>
 
 <form method="post" class="formulario">
+  <?= campoCsrf() ?>
   <label for="nombre">Nombre</label>
   <input type="text" id="nombre" name="nombre" maxlength="40" required value="<?= htmlspecialchars($datos['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 

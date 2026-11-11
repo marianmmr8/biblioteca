@@ -1,3 +1,7 @@
+<?php
+require_once 'seguridad.php';
+$estaAutenticado = usuarioAutenticado();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -19,11 +23,19 @@
     </div>
     <nav aria-label="Navegación principal">
       <a href="index.php">Inicio</a>
-      <a href="prestamos.php">Préstamos</a>
-      <a href="nuevo.php">Nuevo préstamo</a>
       <a href="libros.php">Catálogo</a>
-      <a href="lectores.php">Lectores</a>
-      <a href="prestamos-xml.php">Exportar XML</a>
+      <?php if ($estaAutenticado): ?>
+        <a href="prestamos.php">Préstamos</a>
+        <a href="nuevo.php">Nuevo préstamo</a>
+        <a href="lectores.php">Lectores</a>
+        <a href="prestamos-xml.php">Exportar XML</a>
+        <form method="post" action="logout.php" class="nav-cerrar-sesion">
+          <?= campoCsrf() ?>
+          <button type="submit">Cerrar sesión</button>
+        </form>
+      <?php else: ?>
+        <a href="login.php">Acceso personal</a>
+      <?php endif; ?>
     </nav>
   </header>
   <main>

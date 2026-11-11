@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 

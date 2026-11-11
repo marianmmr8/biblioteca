@@ -17,10 +17,30 @@ Copia `config.example.php` como `config.local.php` dentro de la carpeta de la ap
 
 `config.local.php` está excluido de Git y protegido por `.htaccess`. No publiques ni compartas ese archivo. En XAMPP, si no existe, la aplicación sigue usando `localhost`, la base `biblioteca` y el usuario `root` sin contraseña.
 
-## 3. Subir los archivos
+## 3. Configurar el acceso administrativo
+
+En `config.local.php`, configura también `admin_username` y `admin_password_hash`. En PowerShell, genera el hash con una entrada oculta, sin escribir la contraseña en el historial:
+
+```powershell
+$contrasenaSegura = Read-Host 'Contraseña administrativa' -AsSecureString
+$puntero = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($contrasenaSegura)
+try {
+  $env:BIBLIOTECA_ADMIN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($puntero)
+  @'
+<?php echo password_hash(getenv("BIBLIOTECA_ADMIN_PASSWORD"), PASSWORD_DEFAULT), PHP_EOL;
+'@ | & 'C:\xampp\php\php.exe'
+} finally {
+  Remove-Item Env:BIBLIOTECA_ADMIN_PASSWORD -ErrorAction SilentlyContinue
+  [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($puntero)
+}
+```
+
+Usa una contraseña larga y sustituye el texto de ejemplo por el hash generado. La portada y el catálogo son públicos; para gestionar libros, lectores y préstamos hay que iniciar sesión. No existe una cuenta ni una contraseña predeterminada.
+
+## 4. Subir los archivos
 
 Sube los archivos PHP, `css/`, `.htaccess` y `config.local.php` por el administrador de archivos o FTP. Para conservar la ruta `/biblioteca/`, colócalos dentro de `htdocs/biblioteca/` en el hosting. No subas `config.example.php` en lugar de la configuración real.
 
-## 4. Comprobar el sitio
+## 5. Comprobar el sitio
 
 Configura PHP 8.0 o posterior y comprueba que estén disponibles PDO MySQL y SimpleXML. Abre la URL que proporciona InfinityFree y prueba las páginas, el alta de un libro y lector, un préstamo y su devolución. Activa HTTPS desde el panel cuando el dominio esté listo.

@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
@@ -6,6 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit;
 }
+
+validarCsrf();
 
 $tipo = $_POST['tipo'] ?? '';
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);

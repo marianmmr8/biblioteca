@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
@@ -6,6 +8,7 @@ $datos = ['isbn' => '', 'titulo' => '', 'autor' => '', 'anio' => '', 'genero' =>
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    validarCsrf();
     foreach (['isbn', 'titulo', 'autor', 'anio', 'genero'] as $campo) {
         $datos[$campo] = trim((string) ($_POST[$campo] ?? ''));
     }

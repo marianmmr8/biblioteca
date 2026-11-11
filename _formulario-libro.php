@@ -3,6 +3,7 @@
 <?php endif; ?>
 
 <form method="post" class="formulario">
+  <?= campoCsrf() ?>
   <label for="isbn">ISBN</label>
   <input type="text" id="isbn" name="isbn" maxlength="17" required value="<?= htmlspecialchars($datos['isbn'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 

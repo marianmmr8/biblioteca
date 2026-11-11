@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+$esAdministrador = usuarioAutenticado();
 require 'conexion.php';
 require 'modelo.php';
 
@@ -29,7 +31,9 @@ require 'cabecera.php';
   <p class="aviso"><?= htmlspecialchars($mensaje) ?></p>
 <?php endif; ?>
 
-<p><a href="nuevo-libro.php">Añadir libro</a></p>
+<?php if ($esAdministrador): ?>
+  <p><a href="nuevo-libro.php">Añadir libro</a></p>
+<?php endif; ?>
 
 <section class="catalogo-presentacion" aria-labelledby="inspiracion-lectora">
   <div class="catalogo-citas">
@@ -79,7 +83,10 @@ require 'cabecera.php';
 <?php else: ?>
   <table>
     <thead>
-      <tr><th>Título</th><th>Autor</th><th>ISBN</th><th>Estado</th><th>Acciones</th></tr>
+      <tr>
+        <th>Título</th><th>Autor</th><th>ISBN</th><th>Estado</th>
+        <?php if ($esAdministrador): ?><th>Acciones</th><?php endif; ?>
+      </tr>
     </thead>
     <tbody>
       <?php foreach ($libros as $libro): ?>
@@ -88,14 +95,17 @@ require 'cabecera.php';
           <td><?= htmlspecialchars($libro['autor']) ?></td>
           <td><?= htmlspecialchars($libro['isbn']) ?></td>
           <td><?= htmlspecialchars($libro['estado']) ?></td>
-          <td class="acciones">
-            <a href="editar.php?tipo=libro&amp;id=<?= (int) $libro['id'] ?>">Editar</a>
-            <form method="post" action="eliminar.php">
-              <input type="hidden" name="tipo" value="libro">
-              <input type="hidden" name="id" value="<?= (int) $libro['id'] ?>">
-              <button>Eliminar</button>
-            </form>
-          </td>
+          <?php if ($esAdministrador): ?>
+            <td class="acciones">
+              <a href="editar.php?tipo=libro&amp;id=<?= (int) $libro['id'] ?>">Editar</a>
+              <form method="post" action="eliminar.php">
+                <?= campoCsrf() ?>
+                <input type="hidden" name="tipo" value="libro">
+                <input type="hidden" name="id" value="<?= (int) $libro['id'] ?>">
+                <button>Eliminar</button>
+              </form>
+            </td>
+          <?php endif; ?>
         </tr>
       <?php endforeach; ?>
     </tbody>

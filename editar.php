@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
@@ -31,6 +33,7 @@ $datos = $registro;
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    validarCsrf();
     if ($esLector) {
         foreach (['nombre', 'apellidos', 'telefono', 'email'] as $campo) {
             $datos[$campo] = trim((string) ($_POST[$campo] ?? ''));

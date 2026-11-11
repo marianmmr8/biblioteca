@@ -1,8 +1,11 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    validarCsrf();
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
     if ($id) {

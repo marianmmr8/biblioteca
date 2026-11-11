@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
@@ -45,6 +47,7 @@ require 'cabecera.php';
           </td>
           <td>
             <form method="post" action="devolver.php">
+              <?= campoCsrf() ?>
               <input type="hidden" name="id" value="<?= $p['id'] ?>">
               <button>Devolver</button>
             </form>

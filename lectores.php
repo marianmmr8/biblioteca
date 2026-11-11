@@ -1,4 +1,6 @@
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
@@ -39,6 +41,7 @@ require 'cabecera.php';
             <a href="lector.php?id=<?= (int) $lector['id'] ?>">Historial</a>
             <a href="editar.php?tipo=lector&amp;id=<?= (int) $lector['id'] ?>">Editar</a>
             <form method="post" action="eliminar.php">
+              <?= campoCsrf() ?>
               <input type="hidden" name="tipo" value="lector">
               <input type="hidden" name="id" value="<?= (int) $lector['id'] ?>">
               <button>Eliminar</button>

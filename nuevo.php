@@ -1,11 +1,14 @@
 
 <?php
+require 'seguridad.php';
+exigirAutenticacion();
 require 'conexion.php';
 require 'modelo.php';
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    validarCsrf();
     $lectorId = filter_input(INPUT_POST, 'lector_id', FILTER_VALIDATE_INT);
     $libroId = filter_input(INPUT_POST, 'libro_id', FILTER_VALIDATE_INT);
 
@@ -41,6 +44,7 @@ require 'cabecera.php';
 <?php endif; ?>
 
 <form method="post" class="alta">
+  <?= campoCsrf() ?>
   <label for="lector_id">Lector</label>
   <select name="lector_id" id="lector_id" required>
     <option value="">Elige un lector…</option>
