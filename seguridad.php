@@ -18,27 +18,6 @@ function iniciarSesionSegura(): void
     session_start();
 }
 
-function credencialesAdministrador(): ?array
-{
-    $archivo = __DIR__ . '/config.local.php';
-    if (!is_file($archivo)) {
-        return null;
-    }
-
-    $configuracion = require $archivo;
-    if (!is_array($configuracion)) {
-        return null;
-    }
-
-    $usuario = $configuracion['admin_username'] ?? null;
-    $hash = $configuracion['admin_password_hash'] ?? null;
-    if (!is_string($usuario) || $usuario === '' || !is_string($hash) || $hash === '') {
-        return null;
-    }
-
-    return ['usuario' => $usuario, 'hash' => $hash];
-}
-
 function usuarioAutenticado(): bool
 {
     iniciarSesionSegura();

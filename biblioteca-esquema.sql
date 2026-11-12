@@ -32,3 +32,12 @@ CREATE TABLE IF NOT EXISTS prestamos (
   CONSTRAINT prestamos_ibfk_1 FOREIGN KEY (libro_id) REFERENCES libros (id),
   CONSTRAINT prestamos_ibfk_2 FOREIGN KEY (lector_id) REFERENCES lectores (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT NOT NULL AUTO_INCREMENT,
+  usuario VARCHAR(50) NOT NULL,
+  hash_contrasena VARCHAR(255) NOT NULL,
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY usuario (usuario)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;

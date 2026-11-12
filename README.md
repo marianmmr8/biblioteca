@@ -246,3 +246,17 @@ ORDER BY genero;
 - Para plazos distintos, guarda la fecha de vencimiento en `prestamos` en vez de calcular siempre 30 días.
 - Para otros motores, adapta las funciones MySQL `DATE_ADD`, `DATEDIFF`, `CURDATE`, el bloqueo `FOR UPDATE`, `AUTO_INCREMENT`, `ENGINE` y las colaciones.
 - Mantén las operaciones con parámetros preparados y las altas/bajas relacionadas dentro de transacciones cuando sea necesario.
+
+## Crear aplicaciones nuevas: cuentas y acceso
+
+En esta aplicación, la tabla `usuarios` es la fuente de verdad de la cuenta administradora. El nombre de usuario no es necesariamente `root`: ese texto es solo el usuario de MySQL que usa XAMPP y no debe confundirse con la cuenta de la aplicación.
+
+Al crear una aplicación con inicio de sesión:
+
+- Guarda la cuenta en la base de datos configurada por la aplicación y almacena la contraseña con `password_hash()`. Comprueba el acceso con `password_verify()`; nunca guardes contraseñas en texto plano ni compartas credenciales durante la depuración.
+- Usa el mismo origen de datos y el mismo registro de cuenta para crearla, iniciar sesión y restablecer la contraseña. No dejes nombres predeterminados como `root` en formularios de recuperación ni dependas de valores de ejemplo ocultos.
+- Muestra el nombre de la cuenta que se va a actualizar y confirma que el usuario existe antes de cambiar la contraseña. Tras guardarla, vuelve a leer el hash y verifica la contraseña antes de comunicar que la operación terminó.
+- Prueba el flujo completo con la cuenta elegida: crearla, cerrar sesión, iniciar sesión, restablecer la contraseña e iniciar sesión otra vez. Verifica las redirecciones y la sesión autenticada, no solo el código HTTP o el mensaje visual.
+- Si cambia el nombre de usuario, confirma que la contraseña y el formulario de restablecimiento siguen asociados a la misma cuenta. Para diagnosticar errores, compara de forma segura la base de datos, el usuario y el registro que ve PHP; nunca imprimas hashes ni contraseñas en páginas públicas.
+
+En este proyecto el formulario local de restablecimiento identifica la cuenta administradora configurada y, al verificar el cambio, inicia la sesión. Así se evita que el proceso dependa de recordar un nombre de usuario predeterminado.

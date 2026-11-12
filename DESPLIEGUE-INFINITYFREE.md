@@ -17,25 +17,25 @@ Copia `config.example.php` como `config.local.php` dentro de la carpeta de la ap
 
 `config.local.php` está excluido de Git y protegido por `.htaccess`. No publiques ni compartas ese archivo. En XAMPP, si no existe, la aplicación sigue usando `localhost`, la base `biblioteca` y el usuario `root` sin contraseña.
 
-## 3. Configurar el acceso administrativo
+## 3. Crear la cuenta administradora
 
-En `config.local.php`, configura también `admin_username` y `admin_password_hash`. En PowerShell, genera el hash con una entrada oculta, sin escribir la contraseña en el historial:
+La tabla `usuarios` forma parte de `biblioteca-esquema.sql`. Para crear la única cuenta administradora desde el equipo local, abre PowerShell en la carpeta del proyecto y ejecuta:
 
 ```powershell
 $contrasenaSegura = Read-Host 'Contraseña administrativa' -AsSecureString
 $puntero = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($contrasenaSegura)
 try {
   $env:BIBLIOTECA_ADMIN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($puntero)
-  @'
-<?php echo password_hash(getenv("BIBLIOTECA_ADMIN_PASSWORD"), PASSWORD_DEFAULT), PHP_EOL;
-'@ | & 'C:\xampp\php\php.exe'
+  & 'C:\xampp\php\php.exe' 'C:\xampp\htdocs\biblioteca\crear-administrador.php'
 } finally {
   Remove-Item Env:BIBLIOTECA_ADMIN_PASSWORD -ErrorAction SilentlyContinue
   [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($puntero)
 }
 ```
 
-Usa una contraseña larga y sustituye el texto de ejemplo por el hash generado. La portada y el catálogo son públicos; para gestionar libros, lectores y préstamos hay que iniciar sesión. No existe una cuenta ni una contraseña predeterminada.
+El script te pedirá el nombre de usuario. La contraseña se solicita de forma oculta y se almacena en la base de datos como un hash. Solo se puede crear la cuenta si la tabla aún no tiene usuarios. La portada y el catálogo son públicos; para gestionar libros, lectores y préstamos hay que iniciar sesión.
+
+Para cambiar la contraseña de una cuenta en desarrollo local, abre `http://localhost/biblioteca/restablecer-contrasena-admin.php`. Esta página solo responde en el propio ordenador; en el hosting, usa el script desde PowerShell.
 
 ## 4. Subir los archivos
 
